@@ -18,6 +18,7 @@ package com.tsdreamdeveloper.uniparktestapp.di.modules;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,13 +32,19 @@ import java.util.concurrent.TimeUnit;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.Observable;
+import okhttp3.Credentials;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.tsdreamdeveloper.uniparktestapp.common.Utils.AUTHORIZATION_HEADER;
+import static com.tsdreamdeveloper.uniparktestapp.common.Utils.BEARER;
+import static com.tsdreamdeveloper.uniparktestapp.di.modules.SharedPrefsHelper.PREFS_CURRENT_USER;
 
 /**
  * @author Timur Seisembayev
@@ -47,7 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class RetrofitModule {
 
-    public static final int TIMEOUT = 1;
+    private static final int TIMEOUT = 1;
     private Retrofit retrofit;
     private Context mContext;
     private String mHttpUrl_Basement;
@@ -91,7 +98,6 @@ public class RetrofitModule {
         if (BuildConfig.DEBUG) {
             client.addInterceptor(logging);
         }
-
         return client.build();
     }
 

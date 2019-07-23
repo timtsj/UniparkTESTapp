@@ -82,35 +82,13 @@ public class SharedPrefsHelper {
         String json = gson.toJson(user);
         prefsEditor.putString(PREFS_CURRENT_USER, json);
         prefsEditor.apply();
-        setUserToAccount(user);
     }
 
     public User getUser() {
         Gson gson = new Gson();
         String json = mSharedPreferences.getString(PREFS_CURRENT_USER, "");
         User user = gson.fromJson(json, User.class);
-        user = getUserfromAccount(user);
         return user;
-    }
-
-    public User getUserfromAccount(User user) {
-        String accountType = mContext.getPackageName();
-        AccountManager am = AccountManager.get(mContext);
-        Account[] accounts = am.getAccountsByType(accountType);
-        if (accounts.length > 0) {
-            user.setAccessToken(am.getUserData(accounts[0], Utils.AccountData.TOKEN.toString()));
-        }
-        return user;
-    }
-
-
-    public void setUserToAccount(User userAccount) {
-        String accountType = mContext.getPackageName();
-        AccountManager am = AccountManager.get(mContext);
-        Account[] accounts = am.getAccountsByType(accountType);
-        if (accounts.length > 0) {
-            am.setUserData(accounts[0], Utils.AccountData.TOKEN.toString(), userAccount.getAccessToken());
-        }
     }
 
     public void deleteSavedData(String key) {

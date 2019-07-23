@@ -54,7 +54,7 @@ public interface UniparkApi {
 
     @Headers(API_VERSION_21)
     @POST(TRANSPORTS)
-    Single<TransportsResponse> getTransports(@Header(AUTHORIZATION_HEADER) String token, @Body TransportsRequest request);
+    Single<TransportsResponse> getTransports(@Body TransportsRequest request);
 
     @Headers(API_VERSION_21)
     @POST(QUIT)

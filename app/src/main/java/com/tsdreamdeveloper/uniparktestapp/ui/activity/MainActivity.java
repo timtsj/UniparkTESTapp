@@ -16,9 +16,12 @@
 
 package com.tsdreamdeveloper.uniparktestapp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.tsdreamdeveloper.uniparktestapp.R;
@@ -70,5 +73,47 @@ public class MainActivity extends BaseActivity implements MainView {
     public void addList(List<Datum> datumList) {
         this.datumList.addAll(datumList);
         adapter.setItems(this.datumList);
+    }
+
+    /**
+     * This is where we inflate and set up the menu for this Activity.
+     *
+     * @param menu The options menu in which you place your items.
+     * @return You must return true for the menu to be displayed;
+     * if you return false it will not be shown.
+     * @see #onPrepareOptionsMenu
+     * @see #onOptionsItemSelected
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /**
+     * Callback invoked when a menu item was selected from this Activity's menu.
+     *
+     * @param item The menu item that was selected by the user
+     * @return true if you handle the menu click here, false otherwise
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // получим идентификатор выбранного пункта меню
+        int id = item.getItemId();
+
+        // Операции для выбранного пункта меню
+        switch (id) {
+            case R.id.action_quit:
+                presenter.quit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void nextStep() {
+        startActivity( new Intent(this, SignInActivity.class));
+        finish();
     }
 }

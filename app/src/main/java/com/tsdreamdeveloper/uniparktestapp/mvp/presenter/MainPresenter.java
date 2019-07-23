@@ -21,6 +21,7 @@ import com.tsdreamdeveloper.uniparktestapp.api.UniparkApp;
 import com.tsdreamdeveloper.uniparktestapp.api.UniparkService;
 import com.tsdreamdeveloper.uniparktestapp.common.rxUtils;
 import com.tsdreamdeveloper.uniparktestapp.di.modules.SharedPrefsHelper;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.AuthResponse;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.Datum;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.TransportsRequest;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.TransportsResponse;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 
+import static com.tsdreamdeveloper.uniparktestapp.common.Utils.BEARER;
 import static com.tsdreamdeveloper.uniparktestapp.common.Utils.RESULT_SUCCESS_CODE;
 
 /**
@@ -57,13 +59,13 @@ public class MainPresenter extends BasePresenter<MainView> {
         TransportsRequest request = new TransportsRequest();
         request.setCityId(1);
         request.setTransportTypeId(18);
-        String token = "Bearer " + sharedPrefsHelper.getUser().getAccessToken();
+        //String token = "Bearer " + sharedPrefsHelper.getUser().getAccessToken();
 
         Disposable subscription = uniparkService
-                .getTransports(token, request)
+                .getTransports(request)
                 .compose(rxUtils.applySchedulers())
                 .subscribe(success -> {
-                    result(success);
+                    resultQuit(success);
                 }, throwable -> {
                     getViewState().onLoadingFinish();
                     getViewState().showMessage(throwable.getMessage());
@@ -71,12 +73,38 @@ public class MainPresenter extends BasePresenter<MainView> {
         unsubscribeOnDestroy(subscription);
     }
 
-    private void result(TransportsResponse response) {
+    private void resultQuit(TransportsResponse response) {
         int result = response.getStatus();
         getViewState().onLoadingFinish();
         if (result == RESULT_SUCCESS_CODE) {
             List<Datum> datumList = response.getData();
             getViewState().addList(datumList);
+        } else {
+            getViewState().showMessage(response.getMessage());
+        }
+    }
+
+    public void quit() {
+        getViewState().onLoadingStart();
+        String credentials = BEARER + sharedPrefsHelper.getUser().getAccessToken();
+        Disposable subscription = uniparkService
+                .quit(credentials)
+                .compose(rxUtils.applySchedulers())
+                .subscribe(success -> {
+                    resultQuit(success);
+                }, throwable -> {
+                    getViewState().onLoadingFinish();
+                    getViewState().showMessage(throwable.getMessage());
+                });
+        unsubscribeOnDestroy(subscription);
+    }
+
+    private void resultQuit(AuthResponse response) {
+        int result = response.getStatus();
+        getViewState().onLoadingFinish();
+        if (result == RESULT_SUCCESS_CODE) {
+            sharedPrefsHelper.deleteSavedData(SharedPrefsHelper.PREFS_CURRENT_USER);
+            getViewState().nextStep();
         } else {
             getViewState().showMessage(response.getMessage());
         }

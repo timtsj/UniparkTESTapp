@@ -39,6 +39,7 @@ public class Utils {
     public static final int RESULT_SUCCESS_CODE = 200;
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String PREFIX = "+7";
+    public static final String BEARER = "Bearer ";
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager

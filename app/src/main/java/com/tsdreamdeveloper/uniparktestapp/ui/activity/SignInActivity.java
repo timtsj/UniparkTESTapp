@@ -48,11 +48,11 @@ public class SignInActivity extends BaseActivity implements SignInView {
 
         mPhone = findViewById(R.id.et_phone);
         mPassword = findViewById(R.id.et_password);
-        onSignIn();
-        onSignUp();
+        presenter.init();
         phonePrefix(mPhone);
     }
 
+    @Override
     public void onSignIn() {
         findViewById(R.id.button_sign_in).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,11 +67,13 @@ public class SignInActivity extends BaseActivity implements SignInView {
         });
     }
 
+    @Override
     public void onSignUp() {
         findViewById(R.id.button_sign_up).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
+                finish();
             }
         });
     }

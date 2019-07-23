@@ -45,8 +45,8 @@ public class UniparkService {
         return api.signUp(request);
     }
 
-    public Single<TransportsResponse> getTransports(String token, TransportsRequest request) {
-        return api.getTransports(token, request);
+    public Single<TransportsResponse> getTransports(TransportsRequest request) {
+        return api.getTransports(request);
     }
 
     public Single<AuthResponse> quit(String token) {

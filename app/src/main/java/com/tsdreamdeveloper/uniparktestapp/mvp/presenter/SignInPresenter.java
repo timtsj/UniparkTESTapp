@@ -16,6 +16,10 @@
 
 package com.tsdreamdeveloper.uniparktestapp.mvp.presenter;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Context;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.tsdreamdeveloper.uniparktestapp.api.UniparkApp;
 import com.tsdreamdeveloper.uniparktestapp.api.UniparkService;
@@ -49,6 +53,10 @@ public class SignInPresenter extends BasePresenter<SignInView> {
     @Inject
     SharedPrefsHelper sharedPrefsHelper;
 
+    @Inject
+    Context context;
+
+    AccountManager accMan;
     private String phone;
     private String password;
 
@@ -95,5 +103,14 @@ public class SignInPresenter extends BasePresenter<SignInView> {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void init() {
+        if (sharedPrefsHelper.containsKey(SharedPrefsHelper.PREFS_CURRENT_USER)) {
+            getViewState().nextStep();
+        } else {
+            getViewState().onSignIn();
+            getViewState().onSignUp();
+        }
     }
 }

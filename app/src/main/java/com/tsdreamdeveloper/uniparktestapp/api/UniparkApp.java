@@ -18,12 +18,16 @@ package com.tsdreamdeveloper.uniparktestapp.api;
 
 import android.app.Application;
 
-
 import com.tsdreamdeveloper.uniparktestapp.di.AppComponent;
 import com.tsdreamdeveloper.uniparktestapp.di.DaggerAppComponent;
 import com.tsdreamdeveloper.uniparktestapp.di.modules.ContextModule;
 import com.tsdreamdeveloper.uniparktestapp.di.modules.RetrofitModule;
+import com.tsdreamdeveloper.uniparktestapp.di.modules.SharedPrefsHelper;
 import com.tsdreamdeveloper.uniparktestapp.di.modules.SharedPrefsModule;
+
+import javax.inject.Inject;
+
+import static com.tsdreamdeveloper.uniparktestapp.di.modules.SharedPrefsHelper.PREFS_CURRENT_USER;
 
 /**
  * @author Timur Seisembayev

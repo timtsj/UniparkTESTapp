@@ -21,4 +21,7 @@ package com.tsdreamdeveloper.uniparktestapp.mvp.view;
  * @since 20.07.2019
  */
 public interface SignInView extends BaseView {
+
+    void onSignIn();
+    void onSignUp();
 }
