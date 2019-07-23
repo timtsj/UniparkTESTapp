@@ -16,9 +16,16 @@
 
 package com.tsdreamdeveloper.uniparktestapp.mvp.view;
 
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.Datum;
+
+import java.util.List;
+
 /**
  * @author Timur Seisembayev
- * @since 20.07.2019
+ * @since 22.07.2019
  */
-public interface RegistrationView extends BaseView {
+
+public interface MainView extends BaseView {
+
+    void addList(List<Datum> datumList);
 }

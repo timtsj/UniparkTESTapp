@@ -26,21 +26,18 @@ import com.tsdreamdeveloper.uniparktestapp.common.ConnectivityInterceptor;
 import com.tsdreamdeveloper.uniparktestapp.common.LiveNetworkMonitor;
 import com.tsdreamdeveloper.uniparktestapp.common.Utils;
 
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Observable;
 import okhttp3.Interceptor;
-import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
 
 /**
  * @author Timur Seisembayev
@@ -50,6 +47,7 @@ import rx.Observable;
 @Module
 public class RetrofitModule {
 
+    public static final int TIMEOUT = 1;
     private Retrofit retrofit;
     private Context mContext;
     private String mHttpUrl_Basement;
@@ -70,7 +68,7 @@ public class RetrofitModule {
                     .baseUrl(mHttpUrl_Basement)
                     .client(httpClient)
                     .addConverterFactory(gsonConverterFactory)
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
         return retrofit;
@@ -86,9 +84,9 @@ public class RetrofitModule {
         // provideInterceptorIsConnected checked is network available
         client = new OkHttpClient.Builder()
                 .addInterceptor(provideInterceptorIsConnected(mContext))
-                .connectTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(1, TimeUnit.MINUTES)
-                .writeTimeout(1, TimeUnit.MINUTES);
+                .connectTimeout(TIMEOUT, TimeUnit.MINUTES)
+                .readTimeout(TIMEOUT, TimeUnit.MINUTES)
+                .writeTimeout(TIMEOUT, TimeUnit.MINUTES);
 
         if (BuildConfig.DEBUG) {
             client.addInterceptor(logging);

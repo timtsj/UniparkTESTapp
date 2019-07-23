@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-package com.tsdreamdeveloper.uniparktestapp.mvp.view;
+package com.tsdreamdeveloper.uniparktestapp.mvp.model;
 
 /**
  * @author Timur Seisembayev
- * @since 20.07.2019
+ * @since 22.07.2019
  */
-public interface LoginView extends BaseView {
+public class User {
+
+    private String accessToken;
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 }

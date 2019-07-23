@@ -23,6 +23,7 @@ import com.tsdreamdeveloper.uniparktestapp.di.AppComponent;
 import com.tsdreamdeveloper.uniparktestapp.di.DaggerAppComponent;
 import com.tsdreamdeveloper.uniparktestapp.di.modules.ContextModule;
 import com.tsdreamdeveloper.uniparktestapp.di.modules.RetrofitModule;
+import com.tsdreamdeveloper.uniparktestapp.di.modules.SharedPrefsModule;
 
 /**
  * @author Timur Seisembayev
@@ -47,6 +48,7 @@ public class UniparkApp extends Application {
         sAppComponent = DaggerAppComponent.builder()
                 .contextModule(new ContextModule(this))
                 .retrofitModule(new RetrofitModule(this))
+                .sharedPrefsModule(new SharedPrefsModule(this))
                 .build();
     }
 }

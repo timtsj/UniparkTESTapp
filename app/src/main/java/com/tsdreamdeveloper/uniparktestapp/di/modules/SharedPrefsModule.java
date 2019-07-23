@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2019 TSDream Developer
  *
@@ -15,28 +14,31 @@
  * limitations under the License.
  */
 
-package com.tsdreamdeveloper.uniparktestapp.mvp.model;
+package com.tsdreamdeveloper.uniparktestapp.di.modules;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import android.content.Context;
+import android.preference.PreferenceManager;
+
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * @author Timur Seisembayev
- * @since 20.07.2019
+ * @since 22.07.2019
  */
 
-public class AuthResponse extends BaseResponse {
+@Module
+public class SharedPrefsModule {
+    private Context mContext;
+    private SharedPrefsHelper mSharedPrefsHelper;
 
-    @SerializedName("data")
-    @Expose
-    private Data data;
-
-    public Data getData() {
-        return data;
+    public SharedPrefsModule(Context context) {
+        mContext = context;
     }
 
-    public void setData(Data data) {
-        this.data = data;
+    @Provides
+    public SharedPrefsHelper provideSharedPrefs() {
+        mSharedPrefsHelper = new SharedPrefsHelper(PreferenceManager.getDefaultSharedPreferences(mContext), mContext);
+        return mSharedPrefsHelper;
     }
-
 }

@@ -20,13 +20,15 @@ import com.arellomobile.mvp.InjectViewState;
 import com.tsdreamdeveloper.uniparktestapp.api.UniparkApp;
 import com.tsdreamdeveloper.uniparktestapp.api.UniparkService;
 import com.tsdreamdeveloper.uniparktestapp.common.rxUtils;
+import com.tsdreamdeveloper.uniparktestapp.di.modules.SharedPrefsHelper;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.AuthRequest;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.AuthResponse;
-import com.tsdreamdeveloper.uniparktestapp.mvp.model.RegistrationRequest;
-import com.tsdreamdeveloper.uniparktestapp.mvp.view.RegistrationView;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.User;
+import com.tsdreamdeveloper.uniparktestapp.mvp.view.SignInView;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 import static com.tsdreamdeveloper.uniparktestapp.common.Utils.RESULT_SUCCESS_CODE;
 
@@ -36,40 +38,34 @@ import static com.tsdreamdeveloper.uniparktestapp.common.Utils.RESULT_SUCCESS_CO
  */
 
 @InjectViewState
-public class RegistrationPresenter extends BasePresenter<RegistrationView> {
+public class SignInPresenter extends BasePresenter<SignInView> {
 
-    private static final int CITY_ID = 1;
-    private static final int IS_DRIVER = 0;
-    public static final String MESSAGE = "Success";
+    private static final int PHONE_TYPE = 1;
+    private static final String PHONE_TOKEN = "token";
 
     @Inject
     UniparkService uniparkService;
 
-    private String phone;
-    private String firstname;
+    @Inject
+    SharedPrefsHelper sharedPrefsHelper;
 
-    public RegistrationPresenter() {
+    private String phone;
+    private String password;
+
+    public SignInPresenter() {
         UniparkApp.getAppComponent().inject(this);
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void registration() {
+    public void login() {
         getViewState().onLoadingStart();
-        RegistrationRequest request = new RegistrationRequest();
-        request.setCityId(CITY_ID);
-        request.setFirstname(firstname);
-        request.setIsDriver(IS_DRIVER);
+        AuthRequest request = new AuthRequest();
         request.setPhoneNumber(phone);
+        request.setPassword(password);
+        request.setPhoneToken(PHONE_TOKEN);
+        request.setPhoneType(PHONE_TYPE);
 
-        Subscription subscription = uniparkService
-                .registration(request)
+        Disposable subscription = uniparkService
+                .signIn(request)
                 .compose(rxUtils.applySchedulers())
                 .subscribe(success -> {
                     result(success);
@@ -83,11 +79,21 @@ public class RegistrationPresenter extends BasePresenter<RegistrationView> {
     private void result(AuthResponse response) {
         int result = response.getStatus();
         getViewState().onLoadingFinish();
-
         if (result == RESULT_SUCCESS_CODE) {
-            getViewState().showMessage(MESSAGE);
+            User user = new User();
+            user.setAccessToken(response.getData().getAccessToken());
+            sharedPrefsHelper.putUser(user);
+            getViewState().nextStep();
         } else {
             getViewState().showMessage(response.getMessage());
         }
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

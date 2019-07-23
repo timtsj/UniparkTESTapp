@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2019 TSDream Developer
  *
@@ -15,28 +14,11 @@
  * limitations under the License.
  */
 
-package com.tsdreamdeveloper.uniparktestapp.mvp.model;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.tsdreamdeveloper.uniparktestapp.mvp.view;
 
 /**
  * @author Timur Seisembayev
  * @since 20.07.2019
  */
-
-public class AuthResponse extends BaseResponse {
-
-    @SerializedName("data")
-    @Expose
-    private Data data;
-
-    public Data getData() {
-        return data;
-    }
-
-    public void setData(Data data) {
-        this.data = data;
-    }
-
+public interface SignUpView extends BaseView {
 }

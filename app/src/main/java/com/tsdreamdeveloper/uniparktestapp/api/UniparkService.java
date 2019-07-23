@@ -19,8 +19,11 @@ package com.tsdreamdeveloper.uniparktestapp.api;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.AuthRequest;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.AuthResponse;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.RegistrationRequest;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.TransportsRequest;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.TransportsResponse;
 
-import rx.Observable;
+import io.reactivex.Single;
+import retrofit2.Response;
 
 /**
  * @author Timur Seisembayev
@@ -34,11 +37,19 @@ public class UniparkService {
         this.api = api;
     }
 
-    public Observable<AuthResponse> login(AuthRequest request) {
-        return api.login(request);
+    public Single<AuthResponse> signIn(AuthRequest request) {
+        return api.signIn(request);
     }
 
-    public Observable<AuthResponse> registration(RegistrationRequest request) {
-        return api.registration(request);
+    public Single<AuthResponse> signUp(RegistrationRequest request) {
+        return api.signUp(request);
+    }
+
+    public Single<TransportsResponse> getTransports(String token, TransportsRequest request) {
+        return api.getTransports(token, request);
+    }
+
+    public Single<AuthResponse> quit(String token) {
+        return api.quit(token);
     }
 }

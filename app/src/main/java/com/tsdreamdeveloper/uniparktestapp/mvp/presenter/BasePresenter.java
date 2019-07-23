@@ -21,23 +21,23 @@ import android.support.annotation.NonNull;
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author Timur Seisembayev
  * @since 20.07.2019
  */
 public class BasePresenter<View extends MvpView> extends MvpPresenter<View> {
-    private CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public void unsubscribeOnDestroy(@NonNull Subscription subscription) {
-        compositeSubscription.add(subscription);
+    public void unsubscribeOnDestroy(@NonNull Disposable subscription) {
+        compositeDisposable.add(subscription);
     }
 
     @Override
     public void onDestroy() {
+        compositeDisposable.dispose();
         super.onDestroy();
-        compositeSubscription.clear();
     }
 }

@@ -16,9 +16,10 @@
 
 package com.tsdreamdeveloper.uniparktestapp.common;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.SingleTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * @author Timur Seisembayev
@@ -26,7 +27,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class rxUtils {
-    public static <T> Observable.Transformer<T, T> applySchedulers() {
+    public static <T> SingleTransformer<T, T> applySchedulers() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

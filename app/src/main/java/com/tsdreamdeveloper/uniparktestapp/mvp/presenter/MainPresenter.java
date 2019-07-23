@@ -20,47 +20,47 @@ import com.arellomobile.mvp.InjectViewState;
 import com.tsdreamdeveloper.uniparktestapp.api.UniparkApp;
 import com.tsdreamdeveloper.uniparktestapp.api.UniparkService;
 import com.tsdreamdeveloper.uniparktestapp.common.rxUtils;
-import com.tsdreamdeveloper.uniparktestapp.mvp.model.AuthRequest;
-import com.tsdreamdeveloper.uniparktestapp.mvp.model.AuthResponse;
-import com.tsdreamdeveloper.uniparktestapp.mvp.view.LoginView;
+import com.tsdreamdeveloper.uniparktestapp.di.modules.SharedPrefsHelper;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.Datum;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.TransportsRequest;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.TransportsResponse;
+import com.tsdreamdeveloper.uniparktestapp.mvp.view.MainView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 import static com.tsdreamdeveloper.uniparktestapp.common.Utils.RESULT_SUCCESS_CODE;
 
 /**
  * @author Timur Seisembayev
- * @since 20.07.2019
+ * @since 22.07.2019
  */
 
 @InjectViewState
-public class LoginPresenter extends BasePresenter<LoginView> {
-
-    private static final int PHONE_TYPE = 1;
-    private static final String PHONE_TOKEN = "token";
+public class MainPresenter extends BasePresenter<MainView> {
 
     @Inject
     UniparkService uniparkService;
 
-    private String phone;
-    private String password;
+    @Inject
+    SharedPrefsHelper sharedPrefsHelper;
 
-    public LoginPresenter() {
+    public MainPresenter() {
         UniparkApp.getAppComponent().inject(this);
     }
 
-    public void login() {
+    public void getTransports() {
         getViewState().onLoadingStart();
-        AuthRequest request = new AuthRequest();
-        request.setPhoneNumber(phone);
-        request.setPassword(password);
-        request.setPhoneToken(PHONE_TOKEN);
-        request.setPhoneType(PHONE_TYPE);
+        TransportsRequest request = new TransportsRequest();
+        request.setCityId(1);
+        request.setTransportTypeId(18);
+        String token = "Bearer " + sharedPrefsHelper.getUser().getAccessToken();
 
-        Subscription subscription = uniparkService
-                .login(request)
+        Disposable subscription = uniparkService
+                .getTransports(token, request)
                 .compose(rxUtils.applySchedulers())
                 .subscribe(success -> {
                     result(success);
@@ -71,22 +71,14 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         unsubscribeOnDestroy(subscription);
     }
 
-    private void result(AuthResponse response) {
+    private void result(TransportsResponse response) {
         int result = response.getStatus();
         getViewState().onLoadingFinish();
-
         if (result == RESULT_SUCCESS_CODE) {
-           getViewState().nextStep();
+            List<Datum> datumList = response.getData();
+            getViewState().addList(datumList);
         } else {
             getViewState().showMessage(response.getMessage());
         }
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

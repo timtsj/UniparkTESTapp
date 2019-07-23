@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package com.tsdreamdeveloper.uniparktestapp.ui.fragment;
-
+package com.tsdreamdeveloper.uniparktestapp.ui.activity;
 
 import android.app.ProgressDialog;
 import android.support.v7.app.AlertDialog;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.tsdreamdeveloper.uniparktestapp.R;
 import com.tsdreamdeveloper.uniparktestapp.mvp.view.BaseView;
 
 /**
  * @author Timur Seisembayev
- * @since 20.07.2019
+ * @since 22.07.2019
  */
-public class BaseFragment extends MvpAppCompatFragment implements BaseView {
+
+public class BaseActivity extends MvpAppCompatActivity implements BaseView {
     public static final String NEGATIVE_BUTTON_TEXT = "Ok";
     private ProgressDialog mDialog;
 
     @Override
     public void showMessage(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(message);
         builder.setCancelable(true);
         builder.setNegativeButton(
@@ -57,7 +57,7 @@ public class BaseFragment extends MvpAppCompatFragment implements BaseView {
 
     @Override
     public void onLoadingStart() {
-        mDialog = ProgressDialog.show(getActivity(), "",
+        mDialog = ProgressDialog.show(this, "",
                 getString(R.string.loading_text), true);
     }
 }

@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2019 TSDream Developer
  *
@@ -22,21 +21,30 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * @author Timur Seisembayev
- * @since 20.07.2019
+ * @since 23.07.2019
  */
+public class BaseResponse {
 
-public class AuthResponse extends BaseResponse {
-
-    @SerializedName("data")
+    @SerializedName("status")
     @Expose
-    private Data data;
+    private Integer status;
+    @SerializedName("message")
+    @Expose
+    private String message;
 
-    public Data getData() {
-        return data;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setData(Data data) {
-        this.data = data;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

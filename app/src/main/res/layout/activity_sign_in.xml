@@ -20,7 +20,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.LoginFragment">
+    tools:context=".ui.activity.SignInActivity">
 
     <TextView
         android:id="@+id/tv_auth_label"
@@ -65,7 +65,7 @@
         tools:targetApi="o" />
 
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/button_sign_in"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -75,13 +75,13 @@
         app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
     <Button
-        android:id="@+id/button_registration"
+        android:id="@+id/button_sign_up"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/sign_up"
-        app:layout_constraintEnd_toEndOf="@+id/button_login"
-        app:layout_constraintStart_toStartOf="@+id/button_login"
-        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+        app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
+        app:layout_constraintStart_toStartOf="@+id/button_sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/button_sign_in" />
 
 </android.support.constraint.ConstraintLayout>

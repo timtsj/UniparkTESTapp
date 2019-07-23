@@ -17,20 +17,58 @@
 package com.tsdreamdeveloper.uniparktestapp.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.tsdreamdeveloper.uniparktestapp.R;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.Datum;
+import com.tsdreamdeveloper.uniparktestapp.mvp.presenter.MainPresenter;
+import com.tsdreamdeveloper.uniparktestapp.mvp.view.MainView;
+import com.tsdreamdeveloper.uniparktestapp.ui.adapter.TransportAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Timur Seisembayev
  * @since 20.07.2019
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements MainView {
+
+    @InjectPresenter
+    MainPresenter presenter;
+
+    private List<Datum> datumList = new ArrayList<>();
+    private TransportAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        presenter.getTransports();
+        initRecyclerView();
+    }
+
+    /**
+     * Implement RecyclerView and CityAdapter
+     */
+    private void initRecyclerView() {
+        RecyclerView mTransportsRV = findViewById(R.id.rv_transports);
+        mTransportsRV.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new TransportAdapter(this, datumList, new TransportAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Datum datum) {
+
+            }
+        });
+        mTransportsRV.setAdapter(adapter);
+    }
+
+    @Override
+    public void addList(List<Datum> datumList) {
+        this.datumList.addAll(datumList);
+        adapter.setItems(this.datumList);
     }
 }

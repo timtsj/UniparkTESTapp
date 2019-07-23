@@ -19,14 +19,22 @@ package com.tsdreamdeveloper.uniparktestapp.api;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.AuthRequest;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.AuthResponse;
 import com.tsdreamdeveloper.uniparktestapp.mvp.model.RegistrationRequest;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.TransportsRequest;
+import com.tsdreamdeveloper.uniparktestapp.mvp.model.TransportsResponse;
 
+import io.reactivex.Single;
+import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import rx.Observable;
 
+import static com.tsdreamdeveloper.uniparktestapp.common.Utils.AUTHORIZATION_HEADER;
+import static com.tsdreamdeveloper.uniparktestapp.common.Utils.QUIT;
 import static com.tsdreamdeveloper.uniparktestapp.common.Utils.SIGN_IN;
 import static com.tsdreamdeveloper.uniparktestapp.common.Utils.SIGN_UP;
+import static com.tsdreamdeveloper.uniparktestapp.common.Utils.TRANSPORTS;
 
 /**
  * @author Timur Seisembayev
@@ -34,11 +42,21 @@ import static com.tsdreamdeveloper.uniparktestapp.common.Utils.SIGN_UP;
  */
 public interface UniparkApi {
 
-    @Headers("api-version: 21")
-    @POST(SIGN_IN)
-    Observable<AuthResponse> login(@Body AuthRequest body);
+    String API_VERSION_21 = "api-version: 21";
 
-    @Headers("api-version: 21")
+    @Headers(API_VERSION_21)
+    @POST(SIGN_IN)
+    Single<AuthResponse> signIn(@Body AuthRequest body);
+
+    @Headers(API_VERSION_21)
     @POST(SIGN_UP)
-    Observable<AuthResponse> registration(@Body RegistrationRequest body);
+    Single<AuthResponse> signUp(@Body RegistrationRequest body);
+
+    @Headers(API_VERSION_21)
+    @POST(TRANSPORTS)
+    Single<TransportsResponse> getTransports(@Header(AUTHORIZATION_HEADER) String token, @Body TransportsRequest request);
+
+    @Headers(API_VERSION_21)
+    @POST(QUIT)
+    Single<AuthResponse> quit(@Header(AUTHORIZATION_HEADER) String token);
 }

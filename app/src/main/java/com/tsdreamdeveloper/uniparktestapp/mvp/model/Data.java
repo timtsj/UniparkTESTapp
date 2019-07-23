@@ -38,7 +38,7 @@ public class Data {
     private Object phoneNumberAdditional;
     @SerializedName("access_token")
     @Expose
-    private Object accessToken;
+    private String accessToken;
     @SerializedName("phone_token")
     @Expose
     private Object phoneToken;
@@ -118,11 +118,11 @@ public class Data {
         this.phoneNumberAdditional = phoneNumberAdditional;
     }
 
-    public Object getAccessToken() {
+    public String getAccessToken() {
         return accessToken;
     }
 
-    public void setAccessToken(Object accessToken) {
+    public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 

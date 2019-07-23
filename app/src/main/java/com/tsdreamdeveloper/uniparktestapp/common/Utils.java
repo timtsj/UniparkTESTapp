@@ -34,7 +34,11 @@ public class Utils {
     public static final String BASE_URL = "https://testapi.unipark.kz/v2/";
     public static final String SIGN_UP = "users";
     public static final String SIGN_IN = "users/auth";
+    public static final String TRANSPORTS = "transports/filter";
+    public static final String QUIT = "users/quit";
     public static final int RESULT_SUCCESS_CODE = 200;
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String PREFIX = "+7";
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
@@ -44,22 +48,32 @@ public class Utils {
     }
 
     public static void phonePrefix(EditText editText) {
-        editText.setText("+7");
+        editText.setText(PREFIX);
         Selection.setSelection(editText.getText(), editText.getText().length());
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if (!s.toString().startsWith("+7")) {
-                    editText.setText("+7");
+                if (!s.toString().startsWith(PREFIX)) {
+                    editText.setText(PREFIX);
                     Selection.setSelection(editText.getText(), editText.getText().length());
                 }
             }
         });
+    }
+
+    public enum AccountData {
+        TOKEN {
+            public String toString() {
+                return "TOKEN";
+            }
+        }
     }
 }

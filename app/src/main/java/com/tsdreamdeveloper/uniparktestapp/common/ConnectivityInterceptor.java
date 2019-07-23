@@ -23,9 +23,9 @@ import com.tsdreamdeveloper.uniparktestapp.common.error_handler.NoNetworkExcepti
 
 import java.io.IOException;
 
+import io.reactivex.Observable;
 import okhttp3.Interceptor;
 import okhttp3.Response;
-import rx.Observable;
 
 /**
  * @author Timur Seisembayev
